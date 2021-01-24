@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import SearchBar from '../src/components/SearchBar';
+import Link from 'next/link'
 
-export default function Home() {
+const Home = ({ countries }) => {
   return (
     <div>
       <Head>
@@ -12,8 +12,33 @@ export default function Home() {
       <main>
         <h1>Country Search App</h1>
 
-        <SearchBar />
+        <section>
+          {countries ? 
+            countries.map((country) => 
+              (<Link key={country.name} href="/countries/[id]" as={`/countries/${country.name}`}>
+                <a>
+                  <div>
+                    {country.name}
+                  </div>
+                </a>
+              </Link>)) : 
+            <div>No countries</div>
+          }
+        </section>
       </main>
     </div>
   );
 };
+
+export default Home;
+
+export async function getServerSideProps() {
+  const res = await fetch('https://restcountries.eu/rest/v2/all');
+  const countries = await res.json()
+
+  return {
+    props: {
+      countries,
+    },
+  }
+}
