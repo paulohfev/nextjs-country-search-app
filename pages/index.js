@@ -1,5 +1,8 @@
-import Head from 'next/head'
-import Link from 'next/link'
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { jsx } from 'theme-ui';
+import Head from 'next/head';
+import Link from 'next/link';
 
 const Home = ({ countries }) => {
   return (
@@ -13,17 +16,19 @@ const Home = ({ countries }) => {
         <h1>Country Search App</h1>
 
         <section>
-          {countries ? 
-            countries.map((country) => 
-              (<Link key={country.name} href="/countries/[id]" as={`/countries/${country.name}`}>
-                <a>
-                  <div>
-                    {country.name}
-                  </div>
-                </a>
-              </Link>)) : 
-            <div>No countries</div>
-          }
+          <div sx={{variant: "containers.list"}}>
+            {countries ?
+              countries.map(country =>
+                (<div sx={{width: '33%', p: 2}} key={country.name}>
+                  <Link href="/countries/[id]" as={`/countries/${country.name}`}>
+                    <a>
+                      <div sx={{variant: "containers.card"}}>{country.name}</div>
+                    </a>
+                  </Link>
+                </div>)) :
+              <div>Loading</div>
+            }
+          </div>
         </section>
       </main>
     </div>
